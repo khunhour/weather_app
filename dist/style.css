@@ -26,16 +26,35 @@ body {
 }
 #form input {
   font-family: 'Alata';
+  background-color: white;
+  border: solid 2px white;
+  border-radius: 3px;
 }
-#form button {
+button {
   font-family: 'Alata';
   vertical-align: center;
+  background-color: #e2e0e0;
+  border: solid 2px #e2e0e0;
+  border-radius: 3px;
+}
+button:active {
+  background-color: #cecece;
+  border-color: #cecece;
+  transform: scale(0.95);
 }
 #unitForm {
   color: white;
 }
 input[type='radio'] {
   color: green;
+}
+label {
+  font-size: 1.1rem;
+}
+input[type='radio']:hover,
+button:hover,
+label:hover {
+  cursor: pointer;
 }
 main {
   color: white;
@@ -49,5 +68,10 @@ main {
   font-size: 2rem;
 }
 .temp {
-  font-size: 5rem;
+  font-size: 4.8rem;
+}
+
+footer {
+  margin-top: auto;
+  color: white;
 }

@@ -1,7 +1,6 @@
 function getUrl(cityName, unit) {
   let apiID = `02cafa796b213d5a197f3a3378f70a47`;
   let url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiID}&units=${unit}`;
-  console.log(url);
   return url;
 }
 
@@ -79,6 +78,11 @@ form.addEventListener('submit', (e) => {
   e.preventDefault();
 });
 
+const radioButtons = document.querySelectorAll('input[type="radio"]');
+radioButtons.forEach((btn) => {
+  btn.addEventListener('change', processData);
+});
+
 function checkUnit() {
   const radioButton = document.querySelector('input[name="unit"]:checked');
   if (radioButton.value === 'Celcius') {
@@ -90,14 +94,19 @@ function checkUnit() {
 
 function processData() {
   let cityName = getCityName();
+  // set the name of the previous city (for when changing unit)
   if (!cityName) {
     const nameNode = document.querySelector('.cityName');
     cityName = nameNode.textContent;
   }
-
-  let data = getWeatherInfo(cityName);
-  data.then((info) => {
-    displayWeather(info);
-  });
-  clearForm();
+  // if there is also no previous searched city, break
+  if (!cityName) {
+    return;
+  } else {
+    let data = getWeatherInfo(cityName);
+    data.then((info) => {
+      displayWeather(info);
+    });
+    clearForm();
+  }
 }

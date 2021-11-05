@@ -1,0 +1,53 @@
+:root {
+  font-family: 'Alata', sans-serif;
+  --blue1: 217, 100%, 40%;
+  --blue2: 186, 100%, 40%;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: linear-gradient(hsl(var(--blue2)), hsl(var(--blue1)));
+}
+.title {
+  font-size: 2.5rem;
+  font-weight: bolder;
+  color: white;
+}
+#form {
+  padding: 1rem;
+}
+#form input {
+  font-family: 'Alata';
+}
+#form button {
+  font-family: 'Alata';
+  vertical-align: center;
+}
+#unitForm {
+  color: white;
+}
+input[type='radio'] {
+  color: green;
+}
+main {
+  color: white;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.cityName {
+  font-size: 2rem;
+}
+.temp {
+  font-size: 5rem;
+}

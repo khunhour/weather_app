@@ -6,9 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="main.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alata&display=swap"
+      rel="stylesheet"
+    />
+    <script defer src="../dist/main.js"></script>
   </head>
   <body>
-    <div>hello</div>
+    <header>
+      <div class="logo"></div>
+      <div class="title">Achoo Weather</div>
+    </header>
+    <form id="form">
+      <input type="text" id="input" placeholder="Enter City Name" />
+      <button id="search" type="submit">search</button>
+    </form>
+    <form id="unitForm">
+      <input type="radio" id="celcius" name="unit" value="Celcius" checked />
+      <label for="celcius">Celcius</label>
+      <input type="radio" id="fahrenheit" name="unit" value="Fahrenheit" />
+      <label for="fahrenheit">Fahrenheit</label>
+    </form>
+    <main>
+      <div class="cityName"></div>
+      <div class="temp"></div>
+      <div class="description"></div>
+      <div class="highAndLow">
+        <div class="highTemp"></div>
+        <div class="lowTemp"></div>
+      </div>
+      <div class="humidity"></div>
+      <div class="wind"></div>
+    </main>
   </body>
 </html>

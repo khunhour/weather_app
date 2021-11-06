@@ -1,5 +1,6 @@
 :root {
   font-family: 'Alata', sans-serif;
+  font-size: 17px;
   --blue1: 217, 100%, 40%;
   --blue2: 186, 100%, 40%;
 }
@@ -33,9 +34,10 @@ body {
 button {
   font-family: 'Alata';
   vertical-align: center;
-  background-color: #e2e0e0;
-  border: solid 2px #e2e0e0;
+  background-color: #96959550;
+  border: solid 2px #ffffff;
   border-radius: 3px;
+  color: white;
 }
 button:active {
   background-color: #cecece;
@@ -58,7 +60,7 @@ label:hover {
 }
 main {
   color: white;
-  padding: 2rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -70,6 +72,9 @@ main {
 .temp {
   font-size: 4.8rem;
 }
+.description {
+  font-size: 1.5rem;
+}
 
 .daily-title,
 .hourly-title {
@@ -77,26 +82,52 @@ main {
   margin: 0.2rem 0.5rem;
 }
 .hourly-forecast {
-  height: 150px;
+  height: 9rem;
   width: 600px;
+  padding: 0.5rem;
+  padding-bottom: 0;
+  background-color: rgba(255, 255, 255, 0.226);
+  border-radius: 8px;
+}
+
+.hourly-container {
+  border-top: solid 1px white;
   white-space: nowrap;
   position: relative;
   overflow-x: scroll;
   overflow-y: hidden;
-  padding: 0.5rem;
-  background-color: rgba(255, 255, 255, 0.226);
-  border-radius: 8px;
+  margin: auto 0.5rem;
 }
-.hourly-forecast .hourly {
-  height: 5rem;
-  width: 5rem;
-  margin: 0.5rem;
-  background-color: rgb(204, 58, 94);
-  display: inline-block;
+.scroller {
+  scrollbar-color: white transparent;
+}
+.scroller::-webkit-scrollbar {
+  background-color: transparent;
+}
+.scroller::-webkit-scrollbar-thumb {
+  background: white;
+}
+.hourly-forecast::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+.hourly-forecast::-webkit-scrollbar-thumb {
+  border-radius: 10px;
 }
 
+.hourly {
+  height: 5.2rem;
+  width: 4rem;
+  margin: 0.6rem auto;
+  display: inline-block;
+  color: white;
+  text-align: center;
+}
+.hourly img {
+  width: 2rem;
+  margin: 4px auto;
+}
 .daily-forecast {
-  margin-top: 10px;
+  margin: 10px auto;
   height: auto;
   width: 600px;
   background-color: rgba(255, 255, 255, 0.226);
@@ -111,13 +142,21 @@ main {
 
   margin: 0 10px;
   padding: 0.3rem;
-  display: flex;
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr;
   align-items: center;
-  justify-content: space-evenly;
   color: white;
   border-top: solid 1px white;
 }
-img {
+.daily-day {
+  width: 88px;
+  flex: 1;
+}
+/* .daily-temp-high,
+.daily-temp-low {
+  text-align: end;
+} */
+.daily img {
   width: 1.6rem;
 }
 

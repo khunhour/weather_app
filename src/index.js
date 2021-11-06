@@ -83,13 +83,16 @@ async function getWeatherInfo(name) {
 
 const form = document.querySelector('#form');
 form.addEventListener('submit', (e) => {
-  processData();
+  let cityName = getCityName();
+  processData(cityName);
   e.preventDefault();
 });
 
 const radioButtons = document.querySelectorAll('input[type="radio"]');
 radioButtons.forEach((btn) => {
-  btn.addEventListener('change', processData);
+  btn.addEventListener('change', () => {
+    processData(null);
+  });
 });
 
 function checkUnit() {
@@ -101,8 +104,7 @@ function checkUnit() {
   }
 }
 
-function processData() {
-  let cityName = getCityName();
+function processData(cityName) {
   // set the name of the previous city (for when changing unit)
   if (!cityName) {
     const nameNode = document.querySelector('.cityName');
@@ -131,5 +133,5 @@ function processData() {
     clearForm();
   }
 }
-
+processData('Tokyo');
 export { checkUnit };

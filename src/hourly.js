@@ -1,3 +1,4 @@
+import { doc } from 'prettier';
 import { checkUnit } from './index';
 async function fetchHourlyAndDailyWeatherData(url) {
   try {
@@ -34,18 +35,22 @@ function displayDailyForecast(data) {
     let dailyIcon = daily[1];
     let dailyTempHigh = daily[2];
     let dailyTempLow = daily[3];
+    let day;
 
-    let day = convertTimeStampToDay(dailyData[i].dt);
+    if (i === 0) {
+      day = 'Today';
+    } else {
+      day = convertTimeStampToDay(dailyData[i].dt);
+    }
     dailyDay.textContent = day;
 
     let icon = dailyData[i].weather[0].icon;
-    console.log(icon);
     dailyIcon.src = `./images/${icon}.png`;
 
     let tempHigh = Math.round(dailyData[i].temp.max);
     let tempLow = Math.round(dailyData[i].temp.min);
-    dailyTempHigh.textContent = `${tempHigh}\u00B0`;
-    dailyTempLow.textContent = `${tempLow}\u00B0`;
+    dailyTempHigh.textContent = `H: ${tempHigh}\u00B0`;
+    dailyTempLow.textContent = `L: ${tempLow}\u00B0`;
   }
 
   console.log(dailyData[0].weather.icon);
@@ -67,9 +72,36 @@ function convertTimeStampToDay(time) {
 }
 
 function displayHourlyForecast(data) {
+  let hourlyData = data.detailedForecast.hourly;
+  for (let i = 0; i < 24; i++) {
+    const hourly = document.querySelector(`[data-hourly='${i}']`).children;
+    let hourlyHour = hourly[0];
+    let hourlyIcon = hourly[1];
+    let hourlyTemp = hourly[2];
+    let hour;
+    if (i === 0) {
+      hour = 'Now';
+    } else {
+      hour = convertTimeStampToHour(hourlyData[i].dt);
+    }
+    hourlyHour.textContent = hour;
+
+    let icon = hourlyData[i].weather[0].icon;
+    hourlyIcon.src = `./images/${icon}.png`;
+
+    let temp = Math.round(hourlyData[i].temp);
+    hourlyTemp.textContent = `${temp}\u00B0`;
+  }
+  console.log(hourlyData[0].dt);
   console.log('hourly');
 }
 
+function convertTimeStampToHour(time) {
+  let hour = new Date(time * 1000).getHours();
+  let formattedHour = ('0' + hour).slice(-2);
+
+  return formattedHour;
+}
 export {
   getDetailedForecastUrl,
   fetchHourlyAndDailyWeatherData,

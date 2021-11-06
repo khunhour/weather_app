@@ -1,4 +1,9 @@
-import { getHourlyAndDailyWeatherData, getOneTimeUrl } from './hourly.js';
+import {
+  fetchHourlyAndDailyWeatherData,
+  getDetailedForecastUrl,
+  displayHourlyForecast,
+  displayDailyForecast,
+} from './hourly.js';
 
 function getUrl(cityName, unit) {
   let apiID = `02cafa796b213d5a197f3a3378f70a47`;
@@ -14,7 +19,7 @@ function clearForm() {
   document.getElementById('input').value = '';
 }
 
-async function getCurrentWeatherData(url) {
+async function fetchCurrentWeatherData(url) {
   try {
     let weatherData = {};
     await fetch(url, { mode: 'cors' })
@@ -72,7 +77,7 @@ function displayWeather(data) {
 async function getWeatherInfo(name) {
   let unit = checkUnit();
   let url = getUrl(name, unit);
-  let data = await getCurrentWeatherData(url);
+  let data = await fetchCurrentWeatherData(url);
   return data;
 }
 
@@ -103,17 +108,26 @@ function processData() {
     const nameNode = document.querySelector('.cityName');
     cityName = nameNode.textContent;
   }
-  // if there is also no previous searched city, break
+  // if there is also no previous searched city, break(C/F)
   if (!cityName) {
     return;
   } else {
     let data = getWeatherInfo(cityName);
     console.log(data);
-    data.then((info) => {
-      displayWeather(info);
-      getOneTimeUrl(info);
-      return info;
-    });
+    data
+      .then((info) => {
+        displayWeather(info);
+        return getDetailedForecastUrl(info);
+      })
+      .then((url) => {
+        console.log(url);
+        console.log('hi');
+        return fetchHourlyAndDailyWeatherData(url);
+      })
+      .then((detailedData) => {
+        displayHourlyForecast(detailedData);
+        displayDailyForecast(detailedData);
+      });
     clearForm();
   }
 }

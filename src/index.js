@@ -1,3 +1,5 @@
+import { getHourlyAndDailyWeatherData, getOneTimeUrl } from './hourly.js';
+
 function getUrl(cityName, unit) {
   let apiID = `02cafa796b213d5a197f3a3378f70a47`;
   let url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiID}&units=${unit}`;
@@ -12,9 +14,9 @@ function clearForm() {
   document.getElementById('input').value = '';
 }
 
-async function getWeatherData(url) {
+async function getCurrentWeatherData(url) {
   try {
-    weatherData = {};
+    let weatherData = {};
     await fetch(url, { mode: 'cors' })
       .then((response) => {
         return response.json();
@@ -29,7 +31,9 @@ async function getWeatherData(url) {
         weatherData.windSpeed = response.wind.speed;
         weatherData.weather = response.weather[0].main;
         weatherData.description = response.weather[0].description;
+        weatherData.coord = response.coord;
       });
+    // console.log(weatherData);
     return weatherData;
   } catch (error) {
     console.log(error);
@@ -68,7 +72,7 @@ function displayWeather(data) {
 async function getWeatherInfo(name) {
   let unit = checkUnit();
   let url = getUrl(name, unit);
-  let data = await getWeatherData(url);
+  let data = await getCurrentWeatherData(url);
   return data;
 }
 
@@ -104,9 +108,14 @@ function processData() {
     return;
   } else {
     let data = getWeatherInfo(cityName);
+    console.log(data);
     data.then((info) => {
       displayWeather(info);
+      getOneTimeUrl(info);
+      return info;
     });
     clearForm();
   }
 }
+
+export { checkUnit };

@@ -1,16 +1,17 @@
-import { doc } from 'prettier';
 import { checkUnit } from './index';
+
 async function fetchHourlyAndDailyWeatherData(url) {
   try {
-    let detailedForecast;
-    await fetch(url, { mode: 'cors' })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        detailedForecast = Object.assign({}, data);
-      });
-    return { detailedForecast };
+    let response = await fetch(url, { mode: 'cors' });
+    let formattedResponse = await response.json();
+    let timeZoneOffset = formattedResponse.timezone_offset;
+    let hourlyData = formattedResponse.hourly.slice(0, 24);
+    let dailyData = formattedResponse.daily;
+
+    let dailyForecast = { timeZoneOffset, dailyData };
+    let hourlyForecast = { timeZoneOffset, hourlyData };
+    // console.log(formattedResponse);
+    return { dailyForecast, hourlyForecast };
   } catch (error) {
     console.log(error);
   }
@@ -28,7 +29,10 @@ function getDetailedForecastUrl(data) {
 }
 
 function displayDailyForecast(data) {
-  let dailyData = data.detailedForecast.daily;
+  console.log('daily');
+  console.log(data);
+  let dailyData = data.dailyData;
+  let timeZoneOffset = data.timeZoneOffset;
   for (let i = 0; i < 7; i++) {
     const daily = document.querySelector(`[data-daily='${i}']`).children;
     let dailyDay = daily[0];
@@ -40,7 +44,7 @@ function displayDailyForecast(data) {
     if (i === 0) {
       day = 'Today';
     } else {
-      day = convertTimeStampToDay(dailyData[i].dt);
+      day = convertTimeStampToDay(dailyData[i].dt + timeZoneOffset);
     }
     dailyDay.textContent = day;
 
@@ -72,17 +76,19 @@ function convertTimeStampToDay(time) {
 }
 
 function displayHourlyForecast(data) {
-  let hourlyData = data.detailedForecast.hourly;
+  let hourlyData = data.hourlyData;
+  let timeZoneOffset = data.timeZoneOffset;
   for (let i = 0; i < 24; i++) {
     const hourly = document.querySelector(`[data-hourly='${i}']`).children;
     let hourlyHour = hourly[0];
     let hourlyIcon = hourly[1];
     let hourlyTemp = hourly[2];
     let hour;
+
     if (i === 0) {
       hour = 'Now';
     } else {
-      hour = convertTimeStampToHour(hourlyData[i].dt);
+      hour = convertTimeStampToHour(hourlyData[i].dt + timeZoneOffset);
     }
     hourlyHour.textContent = hour;
 
@@ -92,14 +98,15 @@ function displayHourlyForecast(data) {
     let temp = Math.round(hourlyData[i].temp);
     hourlyTemp.textContent = `${temp}\u00B0`;
   }
-  console.log(hourlyData[0].dt);
-  console.log('hourly');
 }
 
-function convertTimeStampToHour(time) {
-  let hour = new Date(time * 1000).getHours();
+function convertTimeStampToHour(timeStamp) {
+  let localTimeZoneOffsetMiliseconds = new Date().getTimezoneOffset() * 60;
+  // offsettedDate = UTC stamp + timeZoneOFFset(from data) + localTime OFFset
+  // offsettedDate convert local date to UTC and the offset got from data finally set the date to the dedicated timezone;
+  let offsettedDate = timeStamp + localTimeZoneOffsetMiliseconds;
+  let hour = new Date(offsettedDate * 1000).getHours();
   let formattedHour = ('0' + hour).slice(-2);
-
   return formattedHour;
 }
 export {

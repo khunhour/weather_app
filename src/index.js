@@ -115,7 +115,6 @@ function processData(cityName) {
     return;
   } else {
     let data = getWeatherInfo(cityName);
-    console.log(data);
     data
       .then((info) => {
         displayWeather(info);
@@ -127,8 +126,8 @@ function processData(cityName) {
         return fetchHourlyAndDailyWeatherData(url);
       })
       .then((detailedData) => {
-        displayHourlyForecast(detailedData);
-        displayDailyForecast(detailedData);
+        displayHourlyForecast(detailedData.hourlyForecast);
+        displayDailyForecast(detailedData.dailyForecast);
       });
     clearForm();
   }

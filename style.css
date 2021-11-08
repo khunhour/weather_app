@@ -47,9 +47,7 @@ button:active {
 #unitForm {
   color: white;
 }
-input[type='radio'] {
-  color: green;
-}
+
 label {
   font-size: 1.1rem;
 }
@@ -128,6 +126,7 @@ main {
 }
 .daily-forecast {
   margin: 10px auto;
+  margin-bottom: 20px;
   height: auto;
   width: 600px;
   background-color: rgba(255, 255, 255, 0.226);
@@ -148,14 +147,6 @@ main {
   color: white;
   border-top: solid 1px white;
 }
-.daily-day {
-  width: 88px;
-  flex: 1;
-}
-/* .daily-temp-high,
-.daily-temp-low {
-  text-align: end;
-} */
 .daily img {
   width: 1.6rem;
 }
@@ -163,4 +154,16 @@ main {
 footer {
   margin-top: auto;
   color: white;
+  display: flex;
+}
+
+footer img {
+  width: 22px;
+  background-color: white;
+  border: solid 1px white;
+  border-radius: 50%;
+  margin-left: 8px;
+}
+footer img:hover {
+  background-color: transparent;
 }

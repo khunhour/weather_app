@@ -10,13 +10,35 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
+  background-color: #04a2c5;
 }
 body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: linear-gradient(hsl(var(--blue2)), hsl(var(--blue1)));
+
+  transition: background-color 2s ease-in-out;
 }
+
+.sunny {
+  background-color: #d38901;
+  transition: background-color 2s ease-in-out;
+}
+
+.night {
+  background-color: #021847;
+  transition: background-color 2s ease-in-out;
+}
+
+.grey {
+  background-color: #476f86;
+  transition: background-color 2s ease-in-out;
+}
+.clear {
+  background-color: #04a2c5;
+  transition: background-color 2s ease-in-out;
+}
+
 .title {
   font-size: 2.5rem;
   font-weight: bolder;
@@ -84,7 +106,7 @@ main {
   width: 600px;
   padding: 0.5rem;
   padding-bottom: 0;
-  background-color: rgba(255, 255, 255, 0.226);
+  background-color: rgba(255, 255, 255, 0.151);
   border-radius: 8px;
 }
 
@@ -129,7 +151,7 @@ main {
   margin-bottom: 20px;
   height: auto;
   width: 600px;
-  background-color: rgba(255, 255, 255, 0.226);
+  background-color: rgba(255, 255, 255, 0.151);
   border-radius: 8px;
   padding: 0.5rem;
 }
@@ -165,5 +187,5 @@ footer img {
   margin-left: 8px;
 }
 footer img:hover {
-  background-color: transparent;
+  background-color: grey;
 }

@@ -17,9 +17,7 @@ async function fetchHourlyAndDailyWeatherData(url) {
 }
 
 function getDetailedForecastUrl(data) {
-  console.log(data);
   let unit = checkUnit();
-
   let lon = data.coord.lon;
   let lat = data.coord.lat;
   let apiID = `02cafa796b213d5a197f3a3378f70a47`;
@@ -94,6 +92,7 @@ function displayHourlyForecast(data) {
   }
 }
 
+// convert timestamps from local time to UTC and from UTC to dedicated timezone
 function convertTimeStampToHour(timeStamp) {
   let localTimeZoneOffsetMiliseconds = new Date().getTimezoneOffset() * 60;
   // offsettedDate = UTC stamp + timeZoneOFFset(from data) + localTime OFFset
@@ -108,4 +107,5 @@ export {
   fetchHourlyAndDailyWeatherData,
   displayHourlyForecast,
   displayDailyForecast,
+  convertTimeStampToHour,
 };

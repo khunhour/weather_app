@@ -104,7 +104,7 @@ function checkUnit() {
   }
 }
 
-function processData(cityName) {
+async function processData(cityName) {
   // set the name of the previous city (for when changing unit)
   if (!cityName) {
     const nameNode = document.querySelector('.cityName');
@@ -112,23 +112,15 @@ function processData(cityName) {
   }
   // if there is also no previous searched city, break(C/F)
   if (!cityName) {
+    //display error
     return;
   } else {
-    let data = getWeatherInfo(cityName);
-    data
-      .then((info) => {
-        displayWeather(info);
-        return getDetailedForecastUrl(info);
-      })
-      .then((url) => {
-        console.log(url);
-        console.log('hi');
-        return fetchHourlyAndDailyWeatherData(url);
-      })
-      .then((detailedData) => {
-        displayHourlyForecast(detailedData.hourlyForecast);
-        displayDailyForecast(detailedData.dailyForecast);
-      });
+    let data = await getWeatherInfo(cityName);
+    displayWeather(data);
+    let url = await getDetailedForecastUrl(data);
+    let detailedData = await fetchHourlyAndDailyWeatherData(url);
+    displayHourlyForecast(detailedData.hourlyForecast);
+    displayDailyForecast(detailedData.dailyForecast);
     clearForm();
   }
 }

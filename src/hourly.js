@@ -10,7 +10,6 @@ async function fetchHourlyAndDailyWeatherData(url) {
 
     let dailyForecast = { timeZoneOffset, dailyData };
     let hourlyForecast = { timeZoneOffset, hourlyData };
-    // console.log(formattedResponse);
     return { dailyForecast, hourlyForecast };
   } catch (error) {
     console.log(error);
@@ -29,16 +28,14 @@ function getDetailedForecastUrl(data) {
 }
 
 function displayDailyForecast(data) {
-  console.log('daily');
-  console.log(data);
   let dailyData = data.dailyData;
   let timeZoneOffset = data.timeZoneOffset;
   for (let i = 0; i < 7; i++) {
     const daily = document.querySelector(`[data-daily='${i}']`).children;
     let dailyDay = daily[0];
     let dailyIcon = daily[1];
-    let dailyTempHigh = daily[2];
-    let dailyTempLow = daily[3];
+    let dailyTempLow = daily[2];
+    let dailyTempHigh = daily[3];
     let day;
 
     if (i === 0) {
@@ -46,18 +43,15 @@ function displayDailyForecast(data) {
     } else {
       day = convertTimeStampToDay(dailyData[i].dt + timeZoneOffset);
     }
-    dailyDay.textContent = day;
-
     let icon = dailyData[i].weather[0].icon;
-    dailyIcon.src = `./images/${icon}.png`;
-
     let tempHigh = Math.round(dailyData[i].temp.max);
     let tempLow = Math.round(dailyData[i].temp.min);
-    dailyTempHigh.textContent = `H: ${tempHigh}\u00B0`;
-    dailyTempLow.textContent = `L: ${tempLow}\u00B0`;
-  }
 
-  console.log(dailyData[0].weather.icon);
+    dailyDay.textContent = day;
+    dailyIcon.src = `./images/${icon}.png`;
+    dailyTempLow.textContent = `L: ${tempLow}\u00B0`;
+    dailyTempHigh.textContent = `H: ${tempHigh}\u00B0`;
+  }
 }
 
 function convertTimeStampToDay(time) {
@@ -90,12 +84,12 @@ function displayHourlyForecast(data) {
     } else {
       hour = convertTimeStampToHour(hourlyData[i].dt + timeZoneOffset);
     }
-    hourlyHour.textContent = hour;
 
     let icon = hourlyData[i].weather[0].icon;
-    hourlyIcon.src = `./images/${icon}.png`;
-
     let temp = Math.round(hourlyData[i].temp);
+
+    hourlyHour.textContent = hour;
+    hourlyIcon.src = `./images/${icon}.png`;
     hourlyTemp.textContent = `${temp}\u00B0`;
   }
 }

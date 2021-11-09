@@ -13,7 +13,7 @@ async function fetchHourlyAndDailyWeatherData(url) {
     return { dailyForecast, hourlyForecast };
   } catch (error) {
     console.log('error at fetchHourlyAndDailyWeatherData');
-    throw error;
+    console.error(error);
   }
 }
 

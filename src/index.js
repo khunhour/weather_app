@@ -30,19 +30,21 @@ async function processData(cityName) {
   if (!cityName) {
     alert('Please Enter A Valid City Name!');
     return;
-  } else {
-    try {
-      let data = await getWeatherInfo(cityName);
-      let url = getDetailedForecastUrl(data);
-      clearForm();
-      let detailedData = await fetchHourlyAndDailyWeatherData(url);
-      displayWeather(data);
-      displayHourlyForecast(detailedData.hourlyForecast);
-      displayDailyForecast(detailedData.dailyForecast);
-    } catch (error) {
-      alert('Please Enter A Valid City Name!');
-      throw error;
+  }
+  try {
+    let data = await getWeatherInfo(cityName);
+    if (data == null) {
+      throw 'City Not Found';
     }
+    let url = getDetailedForecastUrl(data);
+    clearForm();
+    let detailedData = await fetchHourlyAndDailyWeatherData(url);
+    displayWeather(data);
+    displayHourlyForecast(detailedData.hourlyForecast);
+    displayDailyForecast(detailedData.dailyForecast);
+  } catch (error) {
+    alert('Please Enter a Valid City Name!');
+    console.error(error);
   }
 }
 
@@ -51,11 +53,14 @@ async function getWeatherInfo(name) {
     let unit = checkUnit();
     let url = getUrl(name, unit);
     let fetchedData = await fetchCurrentWeatherData(url);
+    if (fetchedData.cod === '404') {
+      return;
+    }
     let data = extractCurrentWeatherData(fetchedData);
     return data;
   } catch (error) {
     console.log('error at getWeatherInfo');
-    throw error;
+    console.error(error);
   }
 }
 
@@ -81,30 +86,25 @@ async function fetchCurrentWeatherData(url) {
     return formattedResponse;
   } catch (error) {
     console.log('error at fetchCurrentWeatherData');
-    throw error;
+    console.error(error);
   }
 }
 
-async function extractCurrentWeatherData(data) {
-  console.log(data);
-  if (data.cod === '404') {
-    console.log('Error: invalid city Name(extractCurrentWeatherData)');
-  } else {
-    let weatherData = {};
-    weatherData.city = data.name;
-    weatherData.temp = Math.round(data.main.temp);
-    weatherData.lowTemp = Math.round(data.main.temp_min);
-    weatherData.highTemp = Math.round(data.main.temp_max);
-    weatherData.feels_like = data.main.feels_like;
-    weatherData.humidity = data.main.humidity;
-    weatherData.windSpeed = data.wind.speed;
-    weatherData.weather = data.weather[0].main;
-    weatherData.description = data.weather[0].description;
-    weatherData.coord = data.coord;
-    weatherData.date = data.dt;
-    weatherData.timezone = data.timezone;
-    return weatherData;
-  }
+function extractCurrentWeatherData(data) {
+  let weatherData = {};
+  weatherData.city = data.name;
+  weatherData.temp = Math.round(data.main.temp);
+  weatherData.lowTemp = Math.round(data.main.temp_min);
+  weatherData.highTemp = Math.round(data.main.temp_max);
+  weatherData.feels_like = data.main.feels_like;
+  weatherData.humidity = data.main.humidity;
+  weatherData.windSpeed = data.wind.speed;
+  weatherData.weather = data.weather[0].main;
+  weatherData.description = data.weather[0].description;
+  weatherData.coord = data.coord;
+  weatherData.date = data.dt;
+  weatherData.timezone = data.timezone;
+  return weatherData;
 }
 
 function displayWeather(data) {

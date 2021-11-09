@@ -1,4 +1,4 @@
-import { checkUnit } from './index';
+import { checkUnit } from './currentForecast';
 
 async function fetchHourlyAndDailyWeatherData(url) {
   try {

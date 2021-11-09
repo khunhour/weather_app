@@ -12,7 +12,8 @@ async function fetchHourlyAndDailyWeatherData(url) {
     let hourlyForecast = { timeZoneOffset, hourlyData };
     return { dailyForecast, hourlyForecast };
   } catch (error) {
-    console.log(error);
+    console.log('error at fetchHourlyAndDailyWeatherData');
+    throw error;
   }
 }
 

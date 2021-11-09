@@ -16,7 +16,9 @@ form.addEventListener('submit', (e) => {
 const radioButtons = document.querySelectorAll('input[type="radio"]');
 radioButtons.forEach((btn) => {
   btn.addEventListener('change', () => {
-    processData(null);
+    const nameNode = document.querySelector('.cityName');
+    let cityName = nameNode.textContent;
+    processData(cityName);
   });
 });
 
@@ -25,23 +27,22 @@ function getCityName() {
 }
 
 async function processData(cityName) {
-  // set the name of the previous city (for when changing unit)
   if (!cityName) {
-    const nameNode = document.querySelector('.cityName');
-    cityName = nameNode.textContent;
-  }
-  // if there is also no previous searched city, break(C/F)
-  if (!cityName) {
-    //display error
+    alert('Please Enter A Valid City Name!');
     return;
   } else {
-    let data = await getWeatherInfo(cityName);
-    let url = getDetailedForecastUrl(data);
-    let detailedData = await fetchHourlyAndDailyWeatherData(url);
-    clearForm();
-    displayWeather(data);
-    displayHourlyForecast(detailedData.hourlyForecast);
-    displayDailyForecast(detailedData.dailyForecast);
+    try {
+      let data = await getWeatherInfo(cityName);
+      let url = getDetailedForecastUrl(data);
+      clearForm();
+      let detailedData = await fetchHourlyAndDailyWeatherData(url);
+      displayWeather(data);
+      displayHourlyForecast(detailedData.hourlyForecast);
+      displayDailyForecast(detailedData.dailyForecast);
+    } catch (error) {
+      alert('Please Enter A Valid City Name!');
+      throw error;
+    }
   }
 }
 
@@ -49,9 +50,11 @@ async function getWeatherInfo(name) {
   try {
     let unit = checkUnit();
     let url = getUrl(name, unit);
-    let data = await fetchCurrentWeatherData(url);
+    let fetchedData = await fetchCurrentWeatherData(url);
+    let data = extractCurrentWeatherData(fetchedData);
     return data;
   } catch (error) {
+    console.log('error at getWeatherInfo');
     throw error;
   }
 }
@@ -73,26 +76,33 @@ function getUrl(cityName, unit) {
 
 async function fetchCurrentWeatherData(url) {
   try {
-    let weatherData = {};
     let response = await fetch(url, { mode: 'cors' });
     let formattedResponse = await response.json();
-
-    weatherData.city = formattedResponse.name;
-    weatherData.temp = Math.round(formattedResponse.main.temp);
-    weatherData.lowTemp = Math.round(formattedResponse.main.temp_min);
-    weatherData.highTemp = Math.round(formattedResponse.main.temp_max);
-    weatherData.feels_like = formattedResponse.main.feels_like;
-    weatherData.humidity = formattedResponse.main.humidity;
-    weatherData.windSpeed = formattedResponse.wind.speed;
-    weatherData.weather = formattedResponse.weather[0].main;
-    weatherData.description = formattedResponse.weather[0].description;
-    weatherData.coord = formattedResponse.coord;
-    weatherData.date = formattedResponse.dt;
-    weatherData.timezone = formattedResponse.timezone;
-
-    return weatherData;
+    return formattedResponse;
   } catch (error) {
-    console.log(error);
+    console.log('error at fetchCurrentWeatherData');
+    throw error;
+  }
+}
+
+async function extractCurrentWeatherData(data) {
+  if (data.cod === 404) {
+    throw error;
+  } else {
+    let weatherData = {};
+    weatherData.city = data.name;
+    weatherData.temp = Math.round(data.main.temp);
+    weatherData.lowTemp = Math.round(data.main.temp_min);
+    weatherData.highTemp = Math.round(data.main.temp_max);
+    weatherData.feels_like = data.main.feels_like;
+    weatherData.humidity = data.main.humidity;
+    weatherData.windSpeed = data.wind.speed;
+    weatherData.weather = data.weather[0].main;
+    weatherData.description = data.weather[0].description;
+    weatherData.coord = data.coord;
+    weatherData.date = data.dt;
+    weatherData.timezone = data.timezone;
+    return weatherData;
   }
 }
 

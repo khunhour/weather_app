@@ -86,8 +86,9 @@ async function fetchCurrentWeatherData(url) {
 }
 
 async function extractCurrentWeatherData(data) {
-  if (data.cod === 404) {
-    throw error;
+  console.log(data);
+  if (data.cod === '404') {
+    console.log('Error: invalid city Name(extractCurrentWeatherData)');
   } else {
     let weatherData = {};
     weatherData.city = data.name;

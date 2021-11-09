@@ -75,7 +75,7 @@ function checkUnit() {
 
 function getUrl(cityName, unit) {
   let apiID = `02cafa796b213d5a197f3a3378f70a47`;
-  let url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiID}&units=${unit}`;
+  let url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiID}&units=${unit}`;
   return url;
 }
 

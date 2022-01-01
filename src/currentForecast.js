@@ -26,7 +26,7 @@ function checkUnit() {
 }
 
 function getUrl(cityName, unit) {
-  let apiID = `02cafa796b213d5a197f3a3378f70a47`;
+  let apiID = process.env.API_KEY;
   let url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiID}&units=${unit}`;
   return url;
 }

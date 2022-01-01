@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/khunhour/weather_app#readme",
   "devDependencies": {
+    "dotenv-webpack": "^7.0.3",
     "eslint": "^8.1.0",
     "eslint-config-node": "^4.1.0",
     "eslint-config-prettier": "^8.3.0",

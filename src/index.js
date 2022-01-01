@@ -6,8 +6,7 @@ import {
   displayDailyForecast,
 } from './detailedForecast.js';
 
-// fire default weather on start-up;
-processData('Tokyo');
+
 
 // form's event listener onsubmit
 const form = document.querySelector('#form');
@@ -52,3 +51,6 @@ async function processData(cityName) {
 function clearForm() {
   document.getElementById('input').value = '';
 }
+
+// fire default weather on start-up;
+processData('Tokyo');
